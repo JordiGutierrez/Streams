@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
 using System.Threading.Tasks;
 using static System.Console;
@@ -38,6 +39,24 @@ namespace Streams01
 
             Task t = AsyncDemo();
             t.Wait();
+
+            FileStream fs1 = File.OpenRead("test.txt");
+            fs1.Close();
+            FileStream fs2 = File.OpenWrite("writeme.tmp");
+            fs2.Close();
+            FileStream fs3 = File.Create("writeme.tmp");
+            fs3.Close();
+            FileStream fs = new FileStream("test.txt", FileMode.Open);
+            fs.Close();
+
+            int longLines = File.ReadLines("test.txt")
+                .Count(l => l.Length > 80);
+
+            WriteLine($"Directorio actual: {Environment.CurrentDirectory}");
+            WriteLine($"Directorio base de aplicación: {AppDomain.CurrentDomain.BaseDirectory}");
+            string baseFolder = AppDomain.CurrentDomain.BaseDirectory;
+            string logoPath = Path.Combine(baseFolder, "logo.jpg");
+            WriteLine(File.Exists(logoPath));
         }
 
         async static Task AsyncDemo()
